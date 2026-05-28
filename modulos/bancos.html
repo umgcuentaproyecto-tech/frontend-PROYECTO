@@ -604,7 +604,7 @@
         // Cargar bancos
         async function loadBanks() {
             try {
-                const response = await fetch(`${apiBaseUrl}/bancos`, {
+                const response = await fetch(`${apiBaseUrl}/api/bancos`, {
                     headers: {
                         'Authorization': `Bearer ${getToken()}`
                     }
@@ -659,7 +659,7 @@
             }
 
             try {
-                const response = await fetch(`${apiBaseUrl}/bancos/${id}`, {
+                const response = await fetch(`${apiBaseUrl}/api/bancos/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${getToken()}`
                     }
@@ -746,7 +746,7 @@
         // Realizar eliminación
         async function performDelete(id) {
             try {
-                const response = await fetch(`${apiBaseUrl}/bancos/${id}`, {
+                const response = await fetch(`${apiBaseUrl}/api/bancos/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${getToken()}`
@@ -769,7 +769,7 @@
         // Realizar cambio de estado
         async function performToggleStatus(id, activo) {
             try {
-                const response = await fetch(`${apiBaseUrl}/bancos/${id}/toggle-status`, {
+                const response = await fetch(`${apiBaseUrl}/api/bancos/${id}/toggle-status`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
@@ -814,7 +814,7 @@
             try {
                 let response;
                 if (currentEditId) {
-                    response = await fetch(`${apiBaseUrl}/bancos/${currentEditId}`, {
+                    response = await fetch(`${apiBaseUrl}/api/bancos/${currentEditId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -823,7 +823,7 @@
                         body: JSON.stringify(formData)
                     });
                 } else {
-                    response = await fetch(`${apiBaseUrl}/bancos`, {
+                    response = await fetch(`${apiBaseUrl}/api/bancos`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

@@ -1691,10 +1691,7 @@ function enhanceHeaderWithBootstrap() {
     if (header.querySelector('.navbar')) return;
 
     const isModule = location.pathname.includes('/modulos/');
-    const assetBase = isModule ? '../' : './';
     const pageBase = isModule ? './' : './modulos/';
-    const logoSrc = `${assetBase}assets/images/logo banco.png`;
-
     const user = obtenerDelLocalStorage('currentUser');
 
     const nav = document.createElement('nav');
@@ -1712,14 +1709,7 @@ function enhanceHeaderWithBootstrap() {
     nav.innerHTML = `
         <div class="container-fluid navbar-content">
             <div class="navbar-left">
-                <div class="navbar-brand d-flex align-items-center gap-2" style="cursor:default;">
-                    <img src="${logoSrc}" alt="Logo" style="height:36px; width:auto; object-fit:contain;" />
-                    <div class="d-none d-lg-block">
-                        <strong style="color:#0D47A1">Banco Los Canchitos</strong>
-                        <div style="font-size:0.85rem;color:#607080">ERP Bancario</div>
-                    </div>
-                </div>
-                <div id="globalUserInfo" class="global-user-info d-none d-lg-flex"></div>
+                <div id="globalUserInfo" class="global-user-info"></div>
             </div>
             <div class="navbar-right">
                 <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
