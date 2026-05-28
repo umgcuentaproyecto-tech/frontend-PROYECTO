@@ -17,10 +17,11 @@
             color: #333;
         }
 
-        .container {
+        .bank-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 28px;
+            width: 100%;
         }
 
         .header {
@@ -72,7 +73,7 @@
             transform: translateY(-2px);
         }
 
-        .alert {
+        #alertContainer .alert {
             padding: 15px 20px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -80,21 +81,21 @@
             animation: slideIn 0.3s ease;
         }
 
-        .alert.success {
+        #alertContainer .alert.success {
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
             display: block;
         }
 
-        .alert.error {
+        #alertContainer .alert.error {
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
             display: block;
         }
 
-        .alert.info {
+        #alertContainer .alert.info {
             background-color: #d1ecf1;
             color: #0c5460;
             border: 1px solid #bee5eb;
@@ -114,15 +115,17 @@
 
         .content {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr);
             gap: 20px;
+            align-items: start;
         }
 
         .form-section {
             background: white;
             padding: 25px;
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            min-width: 0;
         }
 
         .form-section h2 {
@@ -179,7 +182,8 @@
             margin-top: 20px;
         }
 
-        button {
+        .bank-container button,
+        .modal-content button {
             flex: 1;
             padding: 12px;
             border: none;
@@ -190,48 +194,57 @@
             transition: all 0.3s;
         }
 
-        .btn-primary {
+        .bank-container .btn-primary,
+        .modal-content .btn-primary {
             background-color: #667eea;
             color: white;
         }
 
-        .btn-primary:hover {
+        .bank-container .btn-primary:hover,
+        .modal-content .btn-primary:hover {
             background-color: #5568d3;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-secondary {
+        .bank-container .btn-secondary,
+        .modal-content .btn-secondary {
             background-color: #e0e0e0;
             color: #333;
         }
 
-        .btn-secondary:hover {
+        .bank-container .btn-secondary:hover,
+        .modal-content .btn-secondary:hover {
             background-color: #d0d0d0;
         }
 
-        .btn-danger {
+        .bank-container .btn-danger,
+        .modal-content .btn-danger {
             background-color: #dc3545;
             color: white;
         }
 
-        .btn-danger:hover {
+        .bank-container .btn-danger:hover,
+        .modal-content .btn-danger:hover {
             background-color: #c82333;
         }
 
-        .btn-warning {
+        .bank-container .btn-warning,
+        .modal-content .btn-warning {
             background-color: #ffc107;
             color: #333;
         }
 
-        .btn-warning:hover {
+        .bank-container .btn-warning:hover,
+        .modal-content .btn-warning:hover {
             background-color: #e0a800;
         }
 
         .table-section {
             background: white;
             padding: 25px;
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            min-width: 0;
         }
 
         .table-section h2 {
@@ -244,12 +257,15 @@
 
         .table-responsive {
             overflow-x: auto;
+            width: 100%;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Mobile-friendly responsive table wrapper */
         .table-responsive-mobile {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            width: 100%;
         }
 
         /* Compact styles for small screens */
@@ -292,6 +308,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 760px;
         }
 
         thead {
@@ -315,7 +332,7 @@
             background-color: #f9f9f9;
         }
 
-        .badge {
+        .bank-container .badge {
             display: inline-block;
             padding: 6px 12px;
             border-radius: 20px;
@@ -323,12 +340,12 @@
             font-weight: 600;
         }
 
-        .badge.active {
+        .bank-container .badge.active {
             background-color: #d4edda;
             color: #155724;
         }
 
-        .badge.inactive {
+        .bank-container .badge.inactive {
             background-color: #f8d7da;
             color: #721c24;
         }
@@ -336,6 +353,7 @@
         .action-buttons {
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .btn-small {
@@ -397,11 +415,13 @@
 
         .modal-content {
             background-color: white;
-            margin: 5% auto;
+            margin: 5vh auto;
             padding: 30px;
             border-radius: 10px;
             width: 90%;
             max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             animation: slideUp 0.3s ease;
         }
@@ -471,8 +491,13 @@
         }
 
         @media (max-width: 768px) {
+            .bank-container {
+                padding: 16px 12px;
+            }
+
             .content {
                 grid-template-columns: 1fr;
+                gap: 16px;
             }
 
             .header {
@@ -494,21 +519,55 @@
             }
 
             .action-buttons {
-                flex-direction: column;
+                flex-direction: row;
+                flex-wrap: nowrap;
             }
 
             .button-group {
                 flex-direction: column;
             }
+
+            .btn-small {
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .bank-container {
+                padding: 12px 10px;
+            }
+
+            .form-section,
+            .table-section {
+                padding: 14px;
+            }
+
+            .form-section h2,
+            .table-section h2 {
+                font-size: 1.12em;
+            }
+
+            .table-responsive,
+            .table-responsive-mobile {
+                margin-right: -14px;
+                margin-left: -14px;
+                padding-right: 14px;
+                padding-left: 14px;
+            }
+
+            table {
+                min-width: 680px;
+            }
         }
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
 </head>
-<body>
-    <div class="container">
-        <div id="appHeader" data-back="true"></div>
-        <script src="../shared/header.js"></script>
+<body class="app-page">
+    <div id="appHeader" data-back="true"></div>
+    <script src="../shared/header.js"></script>
 
+    <main class="bank-container">
         <div id="alertContainer"></div>
 
         <div class="content">
@@ -577,7 +636,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- Modal de Confirmación -->
     <div id="confirmModal" class="modal">
