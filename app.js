@@ -110,7 +110,6 @@ async function handleLoginSubmit(event) {
 
     const usuario = document.getElementById('usuario').value.trim();
     const contrasena = document.getElementById('contrasena').value;
-    const recordar = document.getElementById('recordar').checked;
     const loginForm = document.getElementById('loginForm');
     const loginBtn = loginForm.querySelector('.btn-login');
 
@@ -130,11 +129,7 @@ async function handleLoginSubmit(event) {
         guardarToken(response.token);
         guardarEnLocalStorage('currentUser', response.user);
 
-        if (recordar) {
-            guardarEnLocalStorage('usuarioRecordado', usuario);
-        } else {
-            eliminarDelLocalStorage('usuarioRecordado');
-        }
+        // Removed "remember device" behavior: no longer storing username in localStorage
 
         mostrarExito('Bienvenido. Cargando menu principal...');
         setTimeout(() => {
@@ -1728,7 +1723,6 @@ function enhanceHeaderWithBootstrap() {
     header.innerHTML = '';
     header.appendChild(nav);
 
-    const user = obtenerDelLocalStorage('currentUser');
     if (user) setUserShell(user);
 }
 
@@ -1757,7 +1751,6 @@ function obtenerToken() {
 function cerrarSesion() {
     eliminarDelLocalStorage('authToken');
     eliminarDelLocalStorage('currentUser');
-    eliminarDelLocalStorage('usuarioRecordado');
     apiClient.clearToken();
     window.location.href = '/index.html';
 }
@@ -2488,7 +2481,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const usuarioRecordado = obtenerDelLocalStorage('usuarioRecordado');
         if (usuarioRecordado) {
             document.getElementById('usuario').value = usuarioRecordado;
-            document.getElementById('recordar').checked = true;
             document.getElementById('contrasena').focus();
         }
     }
