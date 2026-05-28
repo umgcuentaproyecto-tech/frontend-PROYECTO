@@ -241,24 +241,28 @@ body.login-page {
 
 .notification {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 50%;
+    left: 50%;
+    max-width: min(420px, calc(100vw - 32px));
     padding: 15px 20px;
     border-radius: 4px;
     color: white;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    animation: slideInRight 0.3s ease;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    z-index: 1100;
+    animation: notificationFadeIn 0.2s ease;
 }
 
-@keyframes slideInRight {
+@keyframes notificationFadeIn {
     from {
         opacity: 0;
-        transform: translateX(100px);
+        transform: translate(-50%, calc(-50% + 10px));
     }
     to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translate(-50%, -50%);
     }
 }
 
@@ -1727,8 +1731,8 @@ body.app-page {
     }
 
     .notification {
-        left: 10px;
-        right: 10px;
+        max-width: calc(100vw - 24px);
+        width: calc(100vw - 24px);
     }
 
     .app-main {
