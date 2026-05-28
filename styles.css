@@ -311,6 +311,9 @@ body.app-page {
     align-items: center;
     width: 100%;
     padding: 14px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .brand-block {
@@ -323,7 +326,6 @@ body.app-page {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-left: auto;
 }
 
 .user-info {
@@ -337,21 +339,18 @@ body.app-page {
     }
 
     .session-block {
-        flex-wrap: nowrap;
         justify-content: flex-end;
         align-items: center;
     }
 
-    /* user info stays at left; shrink if needed */
-    .session-block > div {
-        margin-right: 12px;
+    .session-block .user-info {
+        max-width: 55%;
+        margin-right: 10px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 55%;
     }
 
-    /* Ensure back button appears to the left of logout */
     .btn-back,
     .back-btn {
         order: 1;
@@ -387,14 +386,6 @@ body.app-page {
     cursor: pointer;
 }
 
-.btn-secondary {
-    background: #edf1f5;
-    color: #1f2d3d;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-}
 
 .btn-secondary:hover,
 .btn-back:hover {
@@ -406,26 +397,6 @@ body.app-page {
 .btn-back:focus {
     outline: 3px solid rgba(13,71,161,0.12);
     outline-offset: 2px;
-}
-
-@media (max-width: 768px) {
-    .app-header {
-        padding: 10px 14px;
-    }
-
-    .session-block {
-        justify-content: flex-end;
-        align-items: center;
-    }
-
-    .session-block .user-info {
-        max-width: 55%;
-        margin-right: 12px;
-        font-size: 0.95rem;
-    }
-
-    .btn-back { order: 1; margin-right: 8px; }
-    .btn-secondary, #logoutBtn { order: 2; }
 }
 
 .brand-block h1 {
