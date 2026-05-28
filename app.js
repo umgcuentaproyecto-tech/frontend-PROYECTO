@@ -1642,6 +1642,14 @@ function setUserShell(user) {
         if (legacyName) legacyName.style.display = 'none';
         if (legacyRole) legacyRole.style.display = 'none';
     }
+
+    // Remove any duplicated userName/userRole elsewhere in the DOM (except the ones inside #globalUserInfo)
+    document.querySelectorAll('#userName').forEach(el => {
+        if (!el.closest('#globalUserInfo')) el.remove();
+    });
+    document.querySelectorAll('#userRole').forEach(el => {
+        if (!el.closest('#globalUserInfo')) el.remove();
+    });
 }
 
 /* Mobile header behavior: inject a hamburger toggle and collapse session/actions on small screens */
@@ -1683,11 +1691,11 @@ function enhanceHeaderWithBootstrap() {
     if (header.querySelector('.navbar')) return;
 
     const isModule = location.pathname.includes('/modulos/');
-    const basePath = isModule ? '../' : './';
-    const logoSrc = `${basePath}assets/images/logo banco.png`;
+    const assetBase = isModule ? '../' : './';
+    const pageBase = isModule ? './' : './modulos/';
+    const logoSrc = `${assetBase}assets/images/logo banco.png`;
 
     const user = obtenerDelLocalStorage('currentUser');
-    const brandHref = user ? `${basePath}dashboard.html` : `${basePath}index.html`;
 
     const nav = document.createElement('nav');
     nav.className = 'navbar navbar-expand-lg navbar-light bg-white';
@@ -1704,9 +1712,9 @@ function enhanceHeaderWithBootstrap() {
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="appNavbar">
-                <ul class="navbar-nav mb-2 mb-lg-0 align-items-lg-center">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-end align-items-lg-center text-end">
                     <li class="nav-item me-2">
-                        <a class="nav-link btn btn-link" href="${basePath}dashboard.html">Volver al menú principal</a>
+                        <a class="btn btn-primary btn-sm" href="${pageBase}dashboard.html">Regresar</a>
                     </li>
                     <li class="nav-item me-3">
                         <div id="globalUserInfo" class="global-user-info d-none d-lg-flex"></div>

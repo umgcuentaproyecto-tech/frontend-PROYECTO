@@ -1297,6 +1297,7 @@ body.app-page {
     /* Ensure menu/back link and logout are visible and positioned on mobile panel */
     .app-header.mobile-open .session-block .inline-link {
         display: inline-block;
+        align-self: flex-end;
         color: #0D47A1;
         text-decoration: none;
         font-weight: 600;
