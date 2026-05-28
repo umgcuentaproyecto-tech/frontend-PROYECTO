@@ -14,6 +14,7 @@ body {
     color: #333;
     background: url('assets/backgrounds/fondo banco.png') center/cover fixed;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 /* ============================================
@@ -1130,14 +1131,28 @@ body.app-page {
 }
 
 @media (max-width: 760px) {
+    body.login-page {
+        background-attachment: scroll;
+    }
+
     .app-header {
         align-items: flex-start;
         flex-direction: column;
         padding: 14px 18px;
     }
 
+    .brand-block,
+    .session-block {
+        width: 100%;
+    }
+
+    .brand-block {
+        gap: 12px;
+    }
+
     .session-block {
         justify-content: space-between;
+        flex-wrap: wrap;
         width: 100%;
     }
 
@@ -1149,6 +1164,71 @@ body.app-page {
         padding: 20px 16px;
     }
 
+    .module-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .module-card,
+    .content-panel,
+    .summary-card,
+    .chart-card,
+    .login-box {
+        border-radius: 12px;
+    }
+
+    .content-panel,
+    .chart-card {
+        padding: 16px;
+    }
+
+    .page-title h2 {
+        font-size: 1.45rem;
+    }
+
+    .page-title p {
+        font-size: 0.95rem;
+    }
+
+    .module-card {
+        min-height: 0;
+        padding: 16px;
+    }
+
+    .summary,
+    .charts-container {
+        grid-template-columns: 1fr;
+    }
+
+    .filters,
+    .header-actions,
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filters label {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .filters input,
+    .filters select,
+    .btn-primary,
+    .btn-secondary,
+    .btn-info,
+    .btn-login {
+        width: 100%;
+    }
+
+    .table-wrap {
+        margin-right: -4px;
+        margin-left: -4px;
+    }
+
+    .data-table {
+        min-width: 680px;
+    }
+
     .form-grid {
         grid-template-columns: 1fr;
     }
@@ -1157,8 +1237,36 @@ body.app-page {
         grid-column: span 1;
     }
 
+    .client-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .client-form-grid .form-grid-wide {
+        grid-column: span 1;
+    }
+
+    .admin-form {
+        padding-top: 14px;
+    }
+
     .panel-header {
         flex-direction: column;
+    }
+
+    .panel-header h2,
+    .content-panel h2 {
+        font-size: 1.08rem;
+    }
+
+    .chart-card canvas,
+    #balanceTypeChart,
+    #balanceHistoryChart,
+    #movementDailyChart,
+    #movementBankChart,
+    #dashboardInOutChart,
+    #dashboardTransfersChart {
+        height: 260px !important;
+        max-height: 260px !important;
     }
 }
 
@@ -1167,28 +1275,44 @@ body.app-page {
    ============================================ */
 
 @media (max-width: 480px) {
+    .login-container {
+        align-items: stretch;
+        padding: 12px;
+    }
+
     .login-box {
-        padding: 30px 20px;
+        padding: 24px 18px;
         max-width: 100%;
-        margin-right: 0;
+        width: 100%;
     }
 
     .login-container {
         justify-content: center;
     }
 
+    .login-logo {
+        max-width: 190px;
+    }
+
     .login-header h1 {
-        font-size: 1.5rem;
+        font-size: 1.35rem;
     }
 
     .login-form {
-        gap: 15px;
+        gap: 14px;
     }
 
     .form-options {
         flex-direction: column;
         gap: 10px;
         align-items: flex-start;
+    }
+
+    .form-group input,
+    .form-group select,
+    .filters input,
+    .filters select {
+        font-size: 16px;
     }
 
     .forgot-password {
@@ -1199,5 +1323,48 @@ body.app-page {
     .notification {
         left: 10px;
         right: 10px;
+    }
+
+    .app-main {
+        padding: 16px 12px;
+    }
+
+    .app-header {
+        padding: 12px 14px;
+    }
+
+    .app-logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    .brand-block h1 {
+        font-size: 1rem;
+    }
+
+    .brand-block p,
+    .session-block span,
+    .session-block strong {
+        font-size: 0.82rem;
+    }
+
+    .module-card h3 {
+        font-size: 1rem;
+    }
+
+    .module-card p {
+        font-size: 0.92rem;
+    }
+
+    .content-panel,
+    .chart-card,
+    .summary-card {
+        padding: 14px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 10px 8px;
+        font-size: 0.86rem;
     }
 }
