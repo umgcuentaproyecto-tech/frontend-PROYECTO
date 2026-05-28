@@ -311,9 +311,6 @@ body.app-page {
     align-items: center;
     width: 100%;
     padding: 14px 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .brand-block {
@@ -325,12 +322,24 @@ body.app-page {
 .session-block {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  gap: 16px;
+  min-width: 0;
+  margin-left: 24px;
 }
 
 .actions {
-  margin-left: auto; /* empuja todo el bloque de botones a la derecha */
   display: flex;
   gap: 10px;
+  justify-content: flex-end;
+  flex: 0 0 auto;
+}
+
+.actions .btn-secondary,
+.actions .btn-back {
+    width: auto;
+    white-space: nowrap;
 }
 
 .session-user {
@@ -339,7 +348,8 @@ body.app-page {
 }
 
 .user-info {
-    text-align: right;
+    text-align: left;
+    min-width: 0;
 }
 
 /* Mobile header: keep actions at the far right and order buttons */
@@ -349,7 +359,7 @@ body.app-page {
     }
 
     .session-block {
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items: center;
     }
 
@@ -1218,6 +1228,7 @@ body.app-page {
         justify-content: space-between;
         flex-wrap: wrap;
         width: 100%;
+        margin-left: 0;
     }
 
     .session-block strong {
@@ -1347,6 +1358,7 @@ body.app-page {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    gap: 16px;
 }
 
 .navbar-left {
@@ -1387,6 +1399,8 @@ body.app-page {
 .navbar-right {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    flex: 0 0 auto;
 }
 
 .navbar-collapse {
@@ -1429,16 +1443,17 @@ body.app-page {
     }
 
     .navbar-content {
-        flex-direction: column;
-        gap: 10px;
-        align-items: stretch;
+        flex-direction: row;
+        gap: 12px;
+        align-items: center;
     }
 
     .navbar-left {
-        flex-direction: column;
+        flex-direction: row;
         gap: 8px;
         align-items: flex-start;
         flex: 1;
+        min-width: 0;
     }
 
     .navbar-brand {
@@ -1454,11 +1469,11 @@ body.app-page {
     }
 
     .global-user-info {
-        display: none !important;
+        min-width: 0;
     }
 
     .navbar-right {
-        width: 100%;
+        width: auto;
         justify-content: flex-end;
     }
 
@@ -1590,7 +1605,7 @@ body.app-page {
     }
 
     .navbar-right {
-        width: 100%;
+        width: auto;
         justify-content: flex-end;
     }
 
