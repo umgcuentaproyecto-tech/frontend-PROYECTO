@@ -14,79 +14,6 @@
             margin: 0;
         }
 
-        .app-header {
-            background: #fff;
-            border-bottom: 1px solid #ddd;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .brand-block {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .app-logo {
-            height: 40px;
-            width: auto;
-        }
-
-        .brand-block h1 {
-            margin: 0;
-            font-size: 20px;
-            color: #333;
-        }
-
-        .brand-block p {
-            margin: 0;
-            font-size: 12px;
-            color: #666;
-        }
-
-        .session-block {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .session-block div {
-            text-align: right;
-        }
-
-        .session-block strong {
-            display: block;
-            color: #333;
-        }
-
-        .session-block span {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .btn-secondary {
-            padding: 8px 16px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 13px;
-            display: inline-block;
-        }
-
-        .btn-secondary:hover {
-            background: #764ba2;
-        }
-
-        .inline-link {
-            display: inline-block;
-        }
-
         .statement-container {
             flex: 1;
             max-width: 1200px;
@@ -120,6 +47,7 @@
             background: rgba(255, 255, 255, 0.1);
             padding: 15px;
             border-radius: 8px;
+            min-width: 0;
         }
 
         .detail-item label {
@@ -132,6 +60,7 @@
         .detail-item .value {
             font-size: 18px;
             font-weight: bold;
+            overflow-wrap: anywhere;
         }
 
         .filters {
@@ -146,21 +75,20 @@
         }
 
         .filters select,
-        .filters input {
+        .filters input,
+        .filters button {
             padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 14px;
+            max-width: 100%;
+            min-height: 40px;
         }
 
         .filters button {
-            padding: 8px 20px;
             background: #667eea;
             color: white;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
         }
 
         .filters button:hover {
@@ -233,12 +161,14 @@
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            max-width: 100%;
         }
 
         /* Make table horizontally scrollable on small screens */
         .movements-table .table-responsive-mobile {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            width: 100%;
         }
 
         .movements-table table {
@@ -398,6 +328,25 @@
 
         /* Responsive tweaks for small screens */
         @media (max-width: 768px) {
+            .statement-container {
+                padding: 16px 12px;
+            }
+
+            .account-info {
+                padding: 20px;
+                margin-bottom: 18px;
+            }
+
+            .account-info h2 {
+                font-size: 1.45rem;
+            }
+
+            .account-details,
+            .summary {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
             .movements-table table th,
             .movements-table table td {
                 padding: 10px 8px;
@@ -412,6 +361,8 @@
             .filters {
                 padding: 12px;
                 gap: 8px;
+                align-items: stretch;
+                flex-direction: column;
             }
 
             .filters select,
@@ -419,6 +370,28 @@
             .filters button {
                 font-size: 13px;
                 padding: 6px 10px;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .statement-container {
+                padding: 12px 10px;
+            }
+
+            .account-info,
+            .summary-card {
+                border-radius: 8px;
+            }
+
+            .summary-card {
+                padding: 16px;
+            }
+
+            .movements-table {
+                margin-right: -10px;
+                margin-left: -10px;
+                border-radius: 0;
             }
         }
     </style>

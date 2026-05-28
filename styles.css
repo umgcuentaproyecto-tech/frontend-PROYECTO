@@ -565,6 +565,7 @@ body.app-page {
     border-radius: 8px;
     margin-bottom: 18px;
     padding: 20px;
+    min-width: 0;
 }
 
 .panel-header {
@@ -628,6 +629,17 @@ body.app-page {
     font-family: inherit;
     font-size: 1rem;
     padding: 12px 15px;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea,
+.filters input,
+.filters select,
+.filters textarea {
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
 }
 
 .form-group select:focus {
@@ -732,6 +744,7 @@ body.app-page {
 
 .form-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     margin-top: 16px;
 }
@@ -758,6 +771,20 @@ body.app-page {
 
 .validation-result.hidden {
     display: none;
+}
+
+.search-section {
+    background: #f8f9fa;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+.search-grid {
+    align-items: end;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
 }
 
 .btn-primary,
@@ -846,6 +873,7 @@ body.app-page {
 
 .header-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     align-items: center;
 }
@@ -853,6 +881,7 @@ body.app-page {
 .filters {
     align-items: end;
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 18px;
 }
@@ -866,7 +895,8 @@ body.app-page {
 }
 
 .filters input,
-.filters select {
+.filters select,
+.filters button {
     border: 1px solid #d9e2ec;
     border-radius: 4px;
     font: inherit;
@@ -933,6 +963,7 @@ body.app-page {
     border: 1px solid #d9e2ec;
     border-radius: 10px;
     min-height: 300px;
+    min-width: 0;
     padding: 18px;
     display: flex;
     flex-direction: column;
@@ -966,6 +997,7 @@ body.app-page {
     scroll-behavior: smooth;
     border-radius: 8px;
     border: 1px solid #d9e2ec;
+    max-width: 100%;
 }
 
 .data-table {
@@ -1010,6 +1042,7 @@ body.app-page {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     width: 100%;
     max-width: 500px;
+    margin: 16px;
     max-height: 90vh;
     overflow-y: auto;
     animation: slideDown 0.3s ease;
@@ -1084,6 +1117,7 @@ body.app-page {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     width: 100%;
     max-width: 500px;
+    margin: 16px;
     max-height: 90vh;
     overflow-y: auto;
     animation: slideDown 0.3s ease;
@@ -1294,6 +1328,7 @@ body.app-page {
 
     .filters input,
     .filters select,
+    .filters button,
     .btn-primary,
     .btn-secondary,
     .btn-info,
@@ -1328,6 +1363,10 @@ body.app-page {
     }
 
     .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1556,6 +1595,7 @@ body.app-page {
     /* Make selects and inputs safe for small screens */
     .filters input,
     .filters select,
+    .filters button,
     .form-group input,
     .form-group select,
     select {
@@ -1667,7 +1707,8 @@ body.app-page {
     .form-group input,
     .form-group select,
     .filters input,
-    .filters select {
+    .filters select,
+    .filters button {
         font-size: 16px;
     }
 

@@ -1698,8 +1698,8 @@ function enhanceHeaderWithBootstrap() {
     nav.className = 'navbar navbar-expand-lg navbar-light bg-white';
     
     // Determinar si mostrar el botón "Regresar"
-    // No mostrar en dashboard.html o dashboard-financiero.html
-    const isDashboard = location.pathname.includes('dashboard.html') || location.pathname.includes('dashboard-financiero.html');
+    // No mostrar solamente en el menu principal.
+    const isDashboard = location.pathname.includes('dashboard.html');
     const backButtonHtml = isDashboard ? '' : `
         <li class="nav-item">
             <a class="btn btn-primary btn-sm" href="${pageBase}dashboard.html">Regresar</a>
@@ -2014,13 +2014,13 @@ function renderCuentasModule() {
                 <button type="button" id="addAccountBtn" class="btn-primary">Aperturar Nueva Cuenta</button>
             </div>
 
-            <div class="search-section" style="padding: 15px; background: #f8f9fa; border-radius: 4px; margin-bottom: 20px;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end;">
-                    <div>
+            <div class="search-section">
+                <div class="search-grid">
+                    <div class="form-group">
                         <label for="searchNumeroCuenta" style="display: block; margin-bottom: 5px; font-weight: 500;">Número de Cuenta</label>
                         <input type="text" id="searchNumeroCuenta" placeholder="Ej: 202400001234" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
                     </div>
-                    <div>
+                    <div class="form-group">
                         <label for="searchCliente" style="display: block; margin-bottom: 5px; font-weight: 500;">Nombre del Cliente</label>
                         <input type="text" id="searchCliente" placeholder="Ej: Juan Pérez" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
                     </div>
