@@ -1036,7 +1036,7 @@ body.app-page {
     animation: fadeIn 0.3s ease;
 }
 
-.modal-dialog {
+.modal-overlay .modal-dialog {
     background: white;
     border-radius: 8px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
@@ -1046,9 +1046,11 @@ body.app-page {
     max-height: 90vh;
     overflow-y: auto;
     animation: slideDown 0.3s ease;
+    pointer-events: auto;
 }
 
-.modal-header {
+.modal-overlay .modal-header,
+.modal > .modal-content > .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1056,7 +1058,8 @@ body.app-page {
     border-bottom: 1px solid #edf1f5;
 }
 
-.modal-header h3 {
+.modal-overlay .modal-header h3,
+.modal > .modal-content > .modal-header h3 {
     margin: 0;
     font-size: 1.5rem;
     color: #333;
@@ -1081,11 +1084,13 @@ body.app-page {
     color: #333;
 }
 
-.modal-body {
+.modal-overlay .modal-body,
+.modal > .modal-content > .modal-body {
     padding: 20px;
 }
 
-.modal-footer {
+.modal-overlay .modal-footer,
+.modal > .modal-content > .modal-footer {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
@@ -1111,7 +1116,11 @@ body.app-page {
     display: none;
 }
 
-.modal-content {
+.modal:not(.hidden) {
+    display: flex !important;
+}
+
+.modal > .modal-content {
     background: white;
     border-radius: 8px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
@@ -1124,7 +1133,7 @@ body.app-page {
 }
 
 /* Modal ancho específico para formularios más grandes (ej. Nuevo Cliente) */
-.modal-content.modal-wide {
+.modal > .modal-content.modal-wide {
     max-width: 860px;
 }
 
