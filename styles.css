@@ -1253,6 +1253,67 @@ body.app-page {
         flex-direction: column;
     }
 
+    /* Mobile header collapse button */
+    .mobile-menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        margin-left: auto;
+        padding: 6px;
+    }
+
+    .mobile-menu-toggle .bar {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: #0D47A1;
+        margin: 3px 0;
+        border-radius: 2px;
+    }
+
+    /* Hide the session block by default on mobile to save space */
+    .app-header .session-block {
+        display: none;
+    }
+
+    /* When toggled, show session block as a dropdown panel */
+    .app-header.mobile-open .session-block {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        padding: 12px 16px;
+        background: rgba(255,255,255,0.98);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        border-radius: 8px;
+        margin-top: 8px;
+    }
+
+    /* Make selects and inputs safe for small screens */
+    .filters input,
+    .filters select,
+    .form-group input,
+    .form-group select,
+    select {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Avoid excessively wide buttons while keeping them tap-friendly */
+    .btn-primary,
+    .btn-secondary,
+    .btn-info,
+    .btn-login {
+        width: 100%;
+        max-width: 100%;
+    }
+
     .panel-header h2,
     .content-panel h2 {
         font-size: 1.08rem;

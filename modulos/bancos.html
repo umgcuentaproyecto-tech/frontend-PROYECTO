@@ -459,6 +459,7 @@
             }
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -555,10 +556,13 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let currentEditId = null;
         let pendingAction = null;
-        const apiBaseUrl = 'https://api-proyecto-production-c611.up.railway.app/api';
+        // Use runtime-provided API base URL when available (served by /config.js)
+        function normalizeBaseUrl(u){ if(!u) return ''; return u.replace(/\/$/, ''); }
+        const apiBaseUrl = normalizeBaseUrl(window.__API_BASE_URL__ || '');
 
         // Obtener token del localStorage
         function getToken() {

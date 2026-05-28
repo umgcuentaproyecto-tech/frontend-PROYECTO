@@ -1614,6 +1614,86 @@ function setUserShell(user) {
     if (logoutBtn) logoutBtn.addEventListener('click', cerrarSesion);
 }
 
+/* Mobile header behavior: inject a hamburger toggle and collapse session/actions on small screens */
+function setupMobileHeader() {
+    // If Bootstrap navbar is present, skip the custom mobile toggle
+    if (document.querySelector('.navbar')) return;
+    const header = document.querySelector('.app-header');
+    if (!header) return;
+
+    // create toggle if missing
+    if (!header.querySelector('.mobile-menu-toggle')) {
+        const toggle = document.createElement('button');
+        toggle.className = 'mobile-menu-toggle';
+        toggle.setAttribute('aria-label', 'Abrir menú');
+        toggle.innerHTML = '<span class="bar"></span><span class="bar"></span><span class="bar"></span>';
+
+        // Insert toggle at the end of brand-block or at start of header
+        const brand = header.querySelector('.brand-block');
+        if (brand) brand.appendChild(toggle);
+        else header.insertBefore(toggle, header.firstChild);
+
+        toggle.addEventListener('click', () => {
+            header.classList.toggle('mobile-open');
+        });
+    }
+
+    // if viewport is wide, ensure the mobile-open class is removed
+    if (window.innerWidth > 760 && header.classList.contains('mobile-open')) {
+        header.classList.remove('mobile-open');
+    }
+}
+
+/* Replace the existing header with a Bootstrap responsive navbar */
+function enhanceHeaderWithBootstrap() {
+    const header = document.querySelector('.app-header');
+    if (!header) return;
+
+    // avoid duplicate replacement
+    if (header.querySelector('.navbar')) return;
+
+    const isModule = location.pathname.includes('/modulos/');
+    const basePath = isModule ? '../' : './';
+    const logoSrc = `${basePath}assets/images/logo banco.png`;
+
+    const nav = document.createElement('nav');
+    nav.className = 'navbar navbar-expand-lg navbar-light bg-white';
+    nav.innerHTML = `
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="${basePath}index.html">
+                <img src="${logoSrc}" alt="Logo" style="height:36px; width:auto; object-fit:contain;" />
+                <div class="d-none d-lg-block">
+                    <strong style="color:#0D47A1">Banco Los Canchitos</strong>
+                    <div style="font-size:0.85rem;color:#607080">ERP Bancario</div>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#appNavbar" aria-controls="appNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="appNavbar">
+                <ul class="navbar-nav mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item me-3 text-end">
+                        <div style="line-height:1">
+                            <div id="userName" style="font-weight:700;color:#1f2d3d">Usuario</div>
+                            <small id="userRole" style="color:#607080">Rol</small>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <button id="logoutBtn" class="btn btn-secondary">Salir</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    `;
+
+    // Replace header content
+    header.innerHTML = '';
+    header.appendChild(nav);
+
+    const user = obtenerDelLocalStorage('currentUser');
+    if (user) setUserShell(user);
+}
+
 function requireSession() {
     const user = obtenerDelLocalStorage('currentUser');
     const token = obtenerToken();
@@ -2407,6 +2487,14 @@ document.addEventListener('DOMContentLoaded', () => {
         initCuentasModule();
     }
     
+    // Enhance header with Bootstrap navbar if available, else fallback to custom mobile toggle
+    enhanceHeaderWithBootstrap();
+    setupMobileHeader();
+    window.addEventListener('resize', () => {
+        clearTimeout(window.__mobileHeaderResizeTimeout);
+        window.__mobileHeaderResizeTimeout = setTimeout(setupMobileHeader, 120);
+    });
+
     // Inicializar redimensionamiento de columnas
     setTimeout(() => {
         initResizableColumns();
