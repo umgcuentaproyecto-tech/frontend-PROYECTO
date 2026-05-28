@@ -7,7 +7,7 @@
     const showBack = container.dataset.back === 'true' || history.length > 1;
 
     container.innerHTML = `
-    <header class="app-header">
+    <div class="app-header">
         <div class="brand-block">
             <img src="${base}assets/images/logo banco.png" alt="Logo" class="app-logo">
             <div>
@@ -25,7 +25,7 @@
             <a href="${base}modulos/dashboard.html" class="btn-secondary">Menu</a>
             <button id="logoutBtn" class="btn-secondary">Salir</button>
         </div>
-    </header>
+    </div>
     `;
 
     // Populate user info if available
