@@ -324,9 +324,16 @@ body.app-page {
 
 .session-block {
     display: flex;
+    justify-content: flex-end; 
     align-items: center;
     gap: 10px;
+    flex: 1; 
 }
+
+#logoutBtn {
+  margin-left: auto;
+}
+
 
 .user-info {
     text-align: right;
