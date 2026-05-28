@@ -333,12 +333,13 @@ body.app-page {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
+  align-items: center;
   flex: 0 0 auto;
 }
 
 .actions .btn-secondary,
 .actions .btn-back {
-    width: auto;
+    width: auto !important;
     white-space: nowrap;
 }
 
@@ -361,6 +362,11 @@ body.app-page {
     .session-block {
         justify-content: space-between;
         align-items: center;
+    }
+
+    .actions {
+        flex-direction: row;
+        flex-wrap: nowrap;
     }
 
     .session-block .user-info {
@@ -1412,7 +1418,8 @@ body.app-page {
 .navbar-nav {
     gap: 12px;
     display: flex;
-    flex-direction: row;
+    flex-direction: row !important;
+    align-items: center;
 }
 
 .nav-item {
@@ -1423,6 +1430,7 @@ body.app-page {
 .nav-item .btn {
     margin: 0;
     white-space: nowrap;
+    width: auto !important;
 }
 
 .navbar-light .navbar-brand {
@@ -1479,9 +1487,11 @@ body.app-page {
     }
 
     .navbar-nav {
-        flex-direction: row;
+        flex-direction: row !important;
         gap: 8px;
         justify-content: flex-end;
+        align-items: center;
+        flex-wrap: nowrap;
     }
 
     .nav-item {
@@ -1612,6 +1622,8 @@ body.app-page {
 
     .navbar-nav {
         gap: 4px;
+        flex-direction: row !important;
+        flex-wrap: nowrap;
     }
 
     .nav-item .btn {
