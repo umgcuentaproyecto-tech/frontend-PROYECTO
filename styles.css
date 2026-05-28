@@ -322,17 +322,16 @@ body.app-page {
     align-items: center;
     gap: 14px;
 }
-
 .session-block {
     display: flex;
     align-items: center;
-    flex: 1;
     gap: 14px;
+    width: 100%;
 }
 
 .session-block > div {
-    flex: 1;
-    text-align: center;
+    margin-right: auto;
+    text-align: left;
 }
 
 .session-block > a,
@@ -340,8 +339,44 @@ body.app-page {
     flex: 0 0 auto;
 }
 
-.session-block > a {
-    margin-left: auto;
+/* Mobile header: keep actions at the far right and order buttons */
+@media (max-width: 768px) {
+    .app-header {
+        padding: 10px 14px;
+    }
+
+    .session-block {
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    /* user info stays at left; shrink if needed */
+    .session-block > div {
+        margin-right: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 55%;
+    }
+
+    /* Ensure back button appears to the left of logout */
+    .btn-back,
+    .back-btn {
+        order: 1;
+        margin-right: 8px;
+    }
+
+    #logoutBtn,
+    .btn-secondary {
+        order: 2;
+    }
+
+    /* Reduce button padding on small screens */
+    .btn-back, .back-btn, .btn-secondary, .btn-primary, .btn-info {
+        padding: 6px 10px;
+        font-size: 0.88rem;
+    }
 }
 
 .app-logo {

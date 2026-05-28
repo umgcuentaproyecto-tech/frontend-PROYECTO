@@ -246,6 +246,49 @@
             overflow-x: auto;
         }
 
+        /* Mobile-friendly responsive table wrapper */
+        .table-responsive-mobile {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Compact styles for small screens */
+        @media (max-width: 768px) {
+            .form-section, .table-section {
+                padding: 16px;
+            }
+
+            input[type="text"], input[type="url"] {
+                padding: 10px;
+                font-size: 0.95em;
+            }
+
+            .button-group button, .btn-small {
+                padding: 8px 10px;
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 10px 8px;
+                font-size: 0.9em;
+            }
+
+            .badge {
+                padding: 4px 8px;
+                font-size: 0.8em;
+            }
+
+            .action-buttons {
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+
+            /* Ensure table has a minimum width so horizontal scroll appears */
+            table {
+                min-width: 700px;
+            }
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -465,7 +508,7 @@
     <div class="container">
         <div class="header">
             <div class="header-content">
-                <h1>🏦 Gestión de Bancos</h1>
+                <h1>Gestión de Bancos</h1>
                 <p>Administra los datos de los bancos participantes en la red interbancaria</p>
             </div>
             <div class="header-nav">
@@ -519,6 +562,7 @@
             <div class="table-section">
                 <h2>Bancos Registrados</h2>
                 <div class="table-responsive">
+                    <div class="table-responsive-mobile">
                     <table id="banksTable">
                         <thead>
                             <tr>
@@ -536,6 +580,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>

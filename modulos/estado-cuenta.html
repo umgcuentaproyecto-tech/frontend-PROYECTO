@@ -235,6 +235,18 @@
             overflow: hidden;
         }
 
+        /* Make table horizontally scrollable on small screens */
+        .movements-table .table-responsive-mobile {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .movements-table table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px; /* ensure horizontal scroll for many columns */
+        }
+
         .movements-table table {
             width: 100%;
             border-collapse: collapse;
@@ -383,6 +395,32 @@
                 padding: 0;
             }
         }
+
+        /* Responsive tweaks for small screens */
+        @media (max-width: 768px) {
+            .movements-table table th,
+            .movements-table table td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            .movements-table table {
+                min-width: 600px;
+            }
+
+            /* Compress filters area */
+            .filters {
+                padding: 12px;
+                gap: 8px;
+            }
+
+            .filters select,
+            .filters input,
+            .filters button {
+                font-size: 13px;
+                padding: 6px 10px;
+            }
+        }
     </style>
 </head>
 <body class="app-page">
@@ -450,6 +488,7 @@
         <div id="resumen" class="summary"></div>
 
         <div class="movements-table">
+            <div class="table-responsive-mobile">
             <table>
                 <thead>
                     <tr>
@@ -467,6 +506,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 
