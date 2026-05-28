@@ -1612,6 +1612,41 @@ function setUserShell(user) {
     if (userName) userName.textContent = user.nombre;
     if (userRole) userRole.textContent = user.rol;
     if (logoutBtn) logoutBtn.addEventListener('click', cerrarSesion);
+
+    // Move user-visible data out of the slide panel into a global header container
+    function ensureGlobalUserInfoContainer() {
+        const header = document.querySelector('.app-header');
+        if (!header) return null;
+        let container = header.querySelector('#globalUserInfo');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'globalUserInfo';
+            container.className = 'global-user-info';
+            // insert after brand-block if present, else before session-block
+            const brand = header.querySelector('.brand-block');
+            const session = header.querySelector('.session-block');
+            if (brand && brand.nextSibling) header.insertBefore(container, brand.nextSibling);
+            else if (session) header.insertBefore(container, session);
+            else header.appendChild(container);
+        }
+        return container;
+    }
+
+    const globalInfo = ensureGlobalUserInfoContainer();
+    if (globalInfo) {
+        // sanitize minimal: escape angle brackets
+        const esc = (s) => String(s || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        globalInfo.innerHTML = `\n            <div class="user-name">${esc(user.nombre)}</div>\n            <div class="user-role">${esc(user.rol)}</div>\n        `;
+    }
+
+    // hide legacy elements inside the slide so they don't appear there
+    const session = document.querySelector('.app-header .session-block');
+    if (session) {
+        const legacyName = session.querySelector('#userName');
+        const legacyRole = session.querySelector('#userRole');
+        if (legacyName) legacyName.style.display = 'none';
+        if (legacyRole) legacyRole.style.display = 'none';
+    }
 }
 
 /* Mobile header behavior: inject a hamburger toggle and collapse session/actions on small screens */
@@ -1656,11 +1691,14 @@ function enhanceHeaderWithBootstrap() {
     const basePath = isModule ? '../' : './';
     const logoSrc = `${basePath}assets/images/logo banco.png`;
 
+    const user = obtenerDelLocalStorage('currentUser');
+    const brandHref = user ? `${basePath}dashboard.html` : `${basePath}index.html`;
+
     const nav = document.createElement('nav');
     nav.className = 'navbar navbar-expand-lg navbar-light bg-white';
     nav.innerHTML = `
         <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="${basePath}index.html">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="${brandHref}">
                 <img src="${logoSrc}" alt="Logo" style="height:36px; width:auto; object-fit:contain;" />
                 <div class="d-none d-lg-block">
                     <strong style="color:#0D47A1">Banco Los Canchitos</strong>

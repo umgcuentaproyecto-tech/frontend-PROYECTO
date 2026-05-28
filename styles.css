@@ -1294,6 +1294,55 @@ body.app-page {
         margin-top: 8px;
     }
 
+    /* Ensure menu/back link and logout are visible and positioned on mobile panel */
+    .app-header.mobile-open .session-block .inline-link {
+        display: inline-block;
+        color: #0D47A1;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .app-header.mobile-open .session-block #logoutBtn,
+    .app-header.mobile-open .session-block .btn-secondary {
+        align-self: flex-end;
+    }
+
+    /* Global user info container (moved out of slide) */
+    .global-user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
+        margin-left: 16px;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .global-user-info .user-name {
+        font-size: 0.95rem;
+        color: #0D47A1;
+    }
+
+    .global-user-info .user-role {
+        font-size: 0.8rem;
+        color: #666;
+        font-weight: 500;
+    }
+
+    /* Ensure global user info stays visible on mobile and not inside the collapsed session panel */
+    .app-header .global-user-info {
+        display: flex;
+    }
+
+    /* If header uses grid/flex where space is limited, allow name to truncate */
+    .global-user-info .user-name,
+    .global-user-info .user-role {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 180px;
+    }
+
     /* Make selects and inputs safe for small screens */
     .filters input,
     .filters select,
