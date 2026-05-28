@@ -1693,23 +1693,23 @@ function enhanceHeaderWithBootstrap() {
     nav.className = 'navbar navbar-expand-lg navbar-light bg-white';
     nav.innerHTML = `
         <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="${brandHref}">
+            <div class="navbar-brand d-flex align-items-center gap-2" style="cursor:default;">
                 <img src="${logoSrc}" alt="Logo" style="height:36px; width:auto; object-fit:contain;" />
                 <div class="d-none d-lg-block">
                     <strong style="color:#0D47A1">Banco Los Canchitos</strong>
                     <div style="font-size:0.85rem;color:#607080">ERP Bancario</div>
                 </div>
-            </a>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#appNavbar" aria-controls="appNavbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="appNavbar">
                 <ul class="navbar-nav mb-2 mb-lg-0 align-items-lg-center">
-                    <li class="nav-item me-3 text-end">
-                        <div style="line-height:1">
-                            <div id="userName" style="font-weight:700;color:#1f2d3d">Usuario</div>
-                            <small id="userRole" style="color:#607080">Rol</small>
-                        </div>
+                    <li class="nav-item me-2">
+                        <a class="nav-link btn btn-link" href="${basePath}dashboard.html">Volver al menú principal</a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <div id="globalUserInfo" class="global-user-info d-none d-lg-flex"></div>
                     </li>
                     <li class="nav-item">
                         <button id="logoutBtn" class="btn btn-secondary">Salir</button>
