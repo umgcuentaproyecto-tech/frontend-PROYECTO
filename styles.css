@@ -323,17 +323,20 @@ body.app-page {
 }
 
 .session-block {
+  display: flex;
+  align-items: center;
+}
+
+.actions {
+  margin-left: auto; /* empuja todo el bloque de botones a la derecha */
+  display: flex;
+  gap: 10px;
+}
+
+.session-user {
     display: flex;
-    justify-content: flex-end; 
     align-items: center;
-    gap: 10px;
-    flex: 1; 
 }
-
-#logoutBtn {
-  margin-left: auto;
-}
-
 
 .user-info {
     text-align: right;

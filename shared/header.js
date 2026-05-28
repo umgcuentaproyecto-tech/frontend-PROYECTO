@@ -17,13 +17,17 @@
         </div>
 
         <div class="session-block">
-            <div class="user-info">
-                <strong id="userName">Usuario</strong>
-                <span id="userRole">Rol</span>
+            <div class="session-user">
+                <div class="user-info">
+                    <strong id="userName">Usuario</strong>
+                    <span id="userRole">Rol</span>
+                </div>
             </div>
-            ${showBack ? '<button id="backBtn" class="btn-back">← Volver</button>' : ''}
-            <a href="${base}modulos/dashboard.html" class="btn-secondary">Menu</a>
-            <button id="logoutBtn" class="btn-secondary">Salir</button>
+            <div class="actions">
+                ${showBack ? '<button id="backBtn" class="btn-back">← Volver</button>' : ''}
+                <a href="${base}modulos/dashboard.html" class="btn-secondary">Menu</a>
+                <button id="logoutBtn" class="btn-secondary">Salir</button>
+            </div>
         </div>
     </div>
     `;
