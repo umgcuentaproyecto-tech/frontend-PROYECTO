@@ -4,7 +4,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/config.js', (req, res) => {
-  const apiBaseUrl = process.env.API_BASE_URL || '';
+  const rawApiBaseUrl = (process.env.API_BASE_URL || '').trim();
+  const apiBaseUrl = rawApiBaseUrl && !/^https?:\/\//i.test(rawApiBaseUrl)
+    ? `https://${rawApiBaseUrl}`
+    : rawApiBaseUrl;
 
   res.type('application/javascript').send(
     `window.__API_BASE_URL__ = ${JSON.stringify(apiBaseUrl)};`

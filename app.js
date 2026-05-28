@@ -1,12 +1,26 @@
 let LOCAL_SWIFT = 'GTBC6968'; // Valor por defecto, se actualizará desde el servidor
 
 const API_CONFIG = {
-    baseURL: window.__API_BASE_URL__ || '',
+    baseURL: normalizeApiBaseUrl(window.__API_BASE_URL__ || ''),
     timeout: 5000,
     headers: {
         'Content-Type': 'application/json'
     }
 };
+
+function normalizeApiBaseUrl(value) {
+    const trimmedValue = String(value || '').trim().replace(/\/$/, '');
+
+    if (!trimmedValue) {
+        return '';
+    }
+
+    if (/^https?:\/\//i.test(trimmedValue)) {
+        return trimmedValue;
+    }
+
+    return `https://${trimmedValue}`;
+}
 
 class ApiClient {
     constructor(config) {
