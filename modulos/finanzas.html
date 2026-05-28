@@ -7,24 +7,7 @@
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body class="app-page">
-    <header class="app-header">
-        <div class="brand-block">
-            <img src="../assets/images/logo banco.png" alt="Logo Banco Los Canchitos" class="app-logo">
-            <div>
-                <h1>Banco Los Canchitos</h1>
-                <p>Finanzas</p>
-            </div>
-        </div>
-
-        <div class="session-block">
-            <a href="dashboard.html" class="btn-secondary inline-link">Menu</a>
-            <div>
-                <strong id="userName">Usuario</strong>
-                <span id="userRole">Rol</span>
-            </div>
-            <button type="button" id="logoutBtn" class="btn-secondary">Salir</button>
-        </div>
-    </header>
+    <div id="appHeader" data-back="true"></div>
 
     <main class="app-main">
         <section class="page-title">
@@ -39,6 +22,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="../config.js"></script>
+    <script src="../shared/header.js"></script>
     <script src="../app.js"></script>
     <script src="../finanzas.js"></script>
 </body>
