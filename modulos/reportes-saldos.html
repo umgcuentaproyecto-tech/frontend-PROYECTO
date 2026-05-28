@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes de Saldos - Banco Los Canchitos</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="app-page">
+    <header class="app-header">
+        <div class="brand-block">
+            <img src="../assets/images/logo banco.png" alt="Logo Banco Los Canchitos" class="app-logo">
+            <div>
+                <h1>Banco Los Canchitos</h1>
+                <p>Reportes de Saldos</p>
+            </div>
+        </div>
+
+        <div class="session-block">
+            <a href="finanzas.html" class="btn-secondary inline-link">Menú Finanzas</a>
+            <div>
+                <strong id="userName">Usuario</strong>
+                <span id="userRole">Rol</span>
+            </div>
+            <button type="button" id="logoutBtn" class="btn-secondary">Salir</button>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="page-title">
+            <h2>Reportes de Saldos</h2>
+            <p>Consulta balances por cuenta, por tipo y evolución histórica.</p>
+        </section>
+
+        <div id="balanceReportsModule"></div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="../config.js"></script>
+    <script src="../app.js"></script>
+    <script src="../finanzas.js"></script>
+</body>
+</html>

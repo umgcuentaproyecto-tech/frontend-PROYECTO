@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Bancario - Cuentas Bancarias</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="app-page">
+    <header class="app-header">
+        <div class="brand-block">
+            <img src="../assets/images/logo banco.png" alt="Logo Banco Los Canchitos" class="app-logo">
+            <div>
+                <h1>Banco Los Canchitos</h1>
+                <p>Gestión de Cuentas Bancarias</p>
+            </div>
+        </div>
+
+        <div class="session-block">
+            <a href="dashboard.html" class="btn-secondary inline-link">Menu</a>
+            <div>
+                <strong id="userName">Usuario</strong>
+                <span id="userRole">Rol</span>
+            </div>
+            <button type="button" id="logoutBtn" class="btn-secondary">Salir</button>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="page-title">
+            <h2>Cuentas Bancarias</h2>
+            <p>Apertura de cuentas, consulta de saldos y estados.</p>
+        </section>
+
+        <div id="cuentasModule"></div>
+    </main>
+
+    <script src="../config.js"></script>
+    <script src="../app.js"></script>
+</body>
+</html>

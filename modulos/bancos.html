@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Bancos - Sistema Bancario</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .header h1 {
+            margin-bottom: 5px;
+            font-size: 2.5em;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-back {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-back:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .alert.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        .form-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h2 {
+            margin-bottom: 20px;
+            color: #667eea;
+            font-size: 1.5em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="url"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="url"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #5568d3;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d0d0d0;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        .table-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-section h2 {
+            margin-bottom: 20px;
+            color: #667eea;
+            font-size: 1.5em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #ddd;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #555;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .badge.active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .badge.inactive {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.9em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #218838;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .btn-toggle {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .btn-toggle:hover {
+            background-color: #138496;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: #667eea;
+            margin: 0;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .spinner {
+            display: none;
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 1.1em;
+        }
+
+        .helper-text {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .header-nav {
+                width: 100%;
+            }
+
+            .btn-back {
+                width: 100%;
+                text-align: center;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>🏦 Gestión de Bancos</h1>
+                <p>Administra los datos de los bancos participantes en la red interbancaria</p>
+            </div>
+            <div class="header-nav">
+                <button class="btn-back" onclick="window.location.href='dashboard.html'">← Volver</button>
+            </div>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <div class="content">
+            <div class="form-section">
+                <h2>Formulario de Banco</h2>
+                <form id="bankForm">
+                    <div class="form-group">
+                        <label for="nombre">Nombre del Banco</label>
+                        <input type="text" id="nombre" name="nombre" required placeholder="Ej: Banco del Pais">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codigo_swift">Código SWIFT</label>
+                        <input type="text" id="codigo_swift" name="codigo_swift" required placeholder="Ej: BPGTGT01">
+                        <div class="helper-text">Ingresa el código SWIFT del banco</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="url_api">URL de la API</label>
+                        <input type="url" id="url_api" name="url_api" required placeholder="Ej: https://api.banco.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="endpoint_transferencia">Endpoint de Transferencia</label>
+                        <input type="text" id="endpoint_transferencia" name="endpoint_transferencia" placeholder="Ej: /api/transferencias/interbancaria/entrante">
+                        <div class="helper-text">Ruta del endpoint para recibir transferencias interbancarias</div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="activo" name="activo" checked>
+                        <label for="activo">Banco Activo</label>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn-primary">
+                            <span class="spinner" id="submitSpinner"></span>
+                            <span id="submitText">Crear Banco</span>
+                        </button>
+                        <button type="reset" class="btn-secondary">Limpiar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-section">
+                <h2>Bancos Registrados</h2>
+                <div class="table-responsive">
+                    <table id="banksTable">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>SWIFT</th>
+                                <th>URL API</th>
+                                <th>Endpoint</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="banksList">
+                            <tr>
+                                <td colspan="6" class="no-data">Cargando bancos...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeConfirmModal()">&times;</span>
+                <h3>Confirmación</h3>
+            </div>
+            <p id="confirmMessage"></p>
+            <div class="button-group" style="margin-top: 20px;">
+                <button class="btn-primary" onclick="confirmAction()">Confirmar</button>
+                <button class="btn-secondary" onclick="closeConfirmModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentEditId = null;
+        let pendingAction = null;
+        const apiBaseUrl = 'https://api-proyecto-production-c611.up.railway.app/api';
+
+        // Obtener token del localStorage
+        function getToken() {
+            return localStorage.getItem('authToken');
+        }
+
+        // Obtener usuario actual
+        function getCurrentUser() {
+            const user = localStorage.getItem('currentUser');
+            if (!user) return null;
+            try {
+                return JSON.parse(user);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        // Verificar si es administrador
+        function isAdmin() {
+            const user = getCurrentUser();
+            return user && user.rol === 'ADMIN';
+        }
+
+        // Mostrar alerta
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${type}`;
+            alertDiv.textContent = message;
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Cargar bancos
+        async function loadBanks() {
+            try {
+                const response = await fetch(`${apiBaseUrl}/bancos`, {
+                    headers: {
+                        'Authorization': `Bearer ${getToken()}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayBanks(data.data);
+                } else {
+                    showAlert('Error al cargar bancos', 'error');
+                }
+            } catch (error) {
+                showAlert('Error de conexión', 'error');
+            }
+        }
+
+        // Mostrar bancos en la tabla
+        function displayBanks(banks) {
+            const banksList = document.getElementById('banksList');
+
+            if (banks.length === 0) {
+                banksList.innerHTML = '<tr><td colspan="6" class="no-data">No hay bancos registrados</td></tr>';
+                return;
+            }
+
+            banksList.innerHTML = banks.map(bank => `
+                <tr>
+                    <td>${bank.nombre}</td>
+                    <td><strong>${bank.codigo_swift}</strong></td>
+                    <td><code style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-size: 0.9em;">${bank.url_api}</code></td>
+                    <td><code style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-size: 0.85em;">${bank.endpoint_transferencia || '/api/transferencias/interbancaria/entrante'}</code></td>
+                    <td><span class="badge ${bank.activo ? 'active' : 'inactive'}">${bank.activo ? 'Activo' : 'Inactivo'}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-small btn-edit" onclick="editBank(${bank.id_banco})">Editar</button>
+                            <button class="btn-small btn-toggle" onclick="toggleStatus(${bank.id_banco}, ${!bank.activo})">
+                                ${bank.activo ? 'Desactivar' : 'Activar'}
+                            </button>
+                            <button class="btn-small btn-delete" onclick="deleteBank(${bank.id_banco})">Eliminar</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Editar banco
+        async function editBank(id) {
+            if (!isAdmin()) {
+                showAlert('Solo administradores pueden editar bancos', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${apiBaseUrl}/bancos/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${getToken()}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const bank = data.data;
+                    document.getElementById('nombre').value = bank.nombre;
+                    document.getElementById('codigo_swift').value = bank.codigo_swift;
+                    document.getElementById('url_api').value = bank.url_api;
+                    document.getElementById('endpoint_transferencia').value = bank.endpoint_transferencia || '/api/transferencias/interbancaria/entrante';
+                    document.getElementById('activo').checked = bank.activo;
+                    document.getElementById('submitText').textContent = 'Actualizar Banco';
+                    currentEditId = id;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    showAlert('Error al cargar los datos del banco', 'error');
+                }
+            } catch (error) {
+                showAlert('Error de conexión', 'error');
+            }
+        }
+
+        // Eliminar banco
+        function deleteBank(id) {
+            if (!isAdmin()) {
+                showAlert('Solo administradores pueden eliminar bancos', 'error');
+                return;
+            }
+
+            pendingAction = {
+                type: 'delete',
+                id: id
+            };
+
+            showConfirmModal('¿Está seguro que desea eliminar este banco? Esta acción no se puede deshacer.');
+        }
+
+        // Cambiar estado del banco
+        function toggleStatus(id, activo) {
+            if (!isAdmin()) {
+                showAlert('Solo administradores pueden cambiar el estado de los bancos', 'error');
+                return;
+            }
+
+            pendingAction = {
+                type: 'toggleStatus',
+                id: id,
+                activo: activo
+            };
+
+            const state = activo ? 'activar' : 'desactivar';
+            showConfirmModal(`¿Está seguro que desea ${state} este banco?`);
+        }
+
+        // Mostrar modal de confirmación
+        function showConfirmModal(message) {
+            document.getElementById('confirmMessage').textContent = message;
+            document.getElementById('confirmModal').style.display = 'block';
+        }
+
+        // Cerrar modal de confirmación
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+            pendingAction = null;
+        }
+
+        // Confirmar acción
+        async function confirmAction() {
+            if (!pendingAction) return;
+
+            const action = pendingAction;
+            closeConfirmModal();
+
+            if (action.type === 'delete') {
+                await performDelete(action.id);
+            } else if (action.type === 'toggleStatus') {
+                await performToggleStatus(action.id, action.activo);
+            }
+        }
+
+        // Realizar eliminación
+        async function performDelete(id) {
+            try {
+                const response = await fetch(`${apiBaseUrl}/bancos/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${getToken()}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert('Banco eliminado exitosamente', 'success');
+                    loadBanks();
+                } else {
+                    showAlert(data.message || 'Error al eliminar el banco', 'error');
+                }
+            } catch (error) {
+                showAlert('Error de conexión', 'error');
+            }
+        }
+
+        // Realizar cambio de estado
+        async function performToggleStatus(id, activo) {
+            try {
+                const response = await fetch(`${apiBaseUrl}/bancos/${id}/toggle-status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getToken()}`
+                    },
+                    body: JSON.stringify({ activo })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert('Estado del banco actualizado', 'success');
+                    loadBanks();
+                } else {
+                    showAlert(data.message || 'Error al actualizar el estado', 'error');
+                }
+            } catch (error) {
+                showAlert('Error de conexión', 'error');
+            }
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('bankForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!isAdmin()) {
+                showAlert('Solo administradores pueden crear o editar bancos', 'error');
+                return;
+            }
+
+            const submitSpinner = document.getElementById('submitSpinner');
+            submitSpinner.style.display = 'inline-block';
+
+            const formData = {
+                nombre: document.getElementById('nombre').value,
+                codigo_swift: document.getElementById('codigo_swift').value.toUpperCase(),
+                url_api: document.getElementById('url_api').value,
+                endpoint_transferencia: document.getElementById('endpoint_transferencia').value || '/api/transferencias/interbancaria/entrante',
+                activo: document.getElementById('activo').checked
+            };
+
+            try {
+                let response;
+                if (currentEditId) {
+                    response = await fetch(`${apiBaseUrl}/bancos/${currentEditId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${getToken()}`
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                } else {
+                    response = await fetch(`${apiBaseUrl}/bancos`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${getToken()}`
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert(data.message || (currentEditId ? 'Banco actualizado exitosamente' : 'Banco creado exitosamente'), 'success');
+                    document.getElementById('bankForm').reset();
+                    document.getElementById('endpoint_transferencia').value = '/api/transferencias/interbancaria/entrante';
+                    currentEditId = null;
+                    document.getElementById('submitText').textContent = 'Crear Banco';
+                    loadBanks();
+                } else {
+                    showAlert(data.message || 'Error al guardar el banco', 'error');
+                }
+            } catch (error) {
+                showAlert('Error de conexión', 'error');
+            } finally {
+                submitSpinner.style.display = 'none';
+            }
+        });
+
+        // Cerrar modal al hacer clic fuera
+        window.addEventListener('click', (event) => {
+            const confirmModal = document.getElementById('confirmModal');
+            if (event.target === confirmModal) {
+                closeConfirmModal();
+            }
+        });
+
+        // Cargar bancos al iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = getCurrentUser();
+            if (!user) {
+                showAlert('Debe iniciar sesión', 'error');
+                setTimeout(() => window.location.href = '../index.html', 2000);
+                return;
+            }
+
+            if (!isAdmin()) {
+                document.querySelector('.form-section').innerHTML = '<p style="color: red; font-weight: bold;">⚠️ Solo administradores pueden acceder a este módulo.</p>';
+            }
+
+            loadBanks();
+            setInterval(loadBanks, 30000); // Recargar cada 30 segundos
+        });
+    </script>
+</body>
+</html>

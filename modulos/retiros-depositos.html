@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Bancario - Retiros y Depósitos</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="app-page">
+    <header class="app-header">
+        <div class="brand-block">
+            <img src="../assets/images/logo banco.png" alt="Logo Banco Los Canchitos" class="app-logo">
+            <div>
+                <h1>Banco Los Canchitos</h1>
+                <p>Retiros y Depósitos</p>
+            </div>
+        </div>
+
+        <div class="session-block">
+            <a href="dashboard.html" class="btn-secondary inline-link">Menu</a>
+            <div>
+                <strong id="userName">Usuario</strong>
+                <span id="userRole">Rol</span>
+            </div>
+            <button type="button" id="logoutBtn" class="btn-secondary">Salir</button>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="page-title">
+            <h2>Retiros y Depósitos</h2>
+            <p>Realice operaciones de retiro o depósito en cuentas internas o externas.</p>
+        </section>
+
+        <div id="retiroDespositoModule"></div>
+    </main>
+
+    <script src="../config.js"></script>
+    <script src="../app.js"></script>
+</body>
+</html>
