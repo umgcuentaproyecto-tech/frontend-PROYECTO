@@ -1697,12 +1697,25 @@ function enhanceHeaderWithBootstrap() {
     const nav = document.createElement('nav');
     nav.className = 'navbar navbar-expand-lg navbar-light bg-white';
     
-    // Determinar si mostrar el botón "Regresar"
-    // No mostrar solamente en el menu principal.
-    const isDashboard = location.pathname.includes('dashboard.html');
-    const backButtonHtml = isDashboard ? '' : `
+    const path = location.pathname;
+    const isMainDashboard = path.includes('dashboard.html') && !path.includes('dashboard-financiero.html');
+    const financeSubmodules = [
+        'dashboard-financiero.html',
+        'reportes-saldos.html',
+        'analisis-movimientos.html',
+        'alertas-financieras.html'
+    ];
+    const isFinanceSubmodule = financeSubmodules.some((page) => path.includes(page));
+
+    const financeBackButtonHtml = isFinanceSubmodule ? `
         <li class="nav-item">
-            <a class="btn btn-primary btn-sm" href="${pageBase}dashboard.html">Regresar</a>
+            <a class="btn btn-primary btn-sm" href="${pageBase}finanzas.html">Regresar</a>
+        </li>
+    ` : '';
+
+    const menuButtonHtml = isMainDashboard ? '' : `
+        <li class="nav-item">
+            <a class="btn btn-primary btn-sm" href="${pageBase}dashboard.html">Menu</a>
         </li>
     `;
     
@@ -1713,7 +1726,8 @@ function enhanceHeaderWithBootstrap() {
             </div>
             <div class="navbar-right">
                 <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
-                    ${backButtonHtml}
+                    ${financeBackButtonHtml}
+                    ${menuButtonHtml}
                     <li class="nav-item">
                         <button id="logoutBtn" class="btn btn-secondary">Salir</button>
                     </li>
