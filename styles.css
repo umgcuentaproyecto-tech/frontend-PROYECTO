@@ -1351,6 +1351,7 @@ body.app-page {
 
 .navbar {
     padding: 12px 24px !important;
+    width: 100%;
 }
 
 .navbar-content {
