@@ -1699,26 +1699,31 @@ function enhanceHeaderWithBootstrap() {
 
     const nav = document.createElement('nav');
     nav.className = 'navbar navbar-expand-lg navbar-light bg-white';
+    
+    // Determinar si mostrar el botón "Regresar"
+    // No mostrar en dashboard.html o dashboard-financiero.html
+    const isDashboard = location.pathname.includes('dashboard.html') || location.pathname.includes('dashboard-financiero.html');
+    const backButtonHtml = isDashboard ? '' : `
+        <li class="nav-item">
+            <a class="btn btn-primary btn-sm" href="${pageBase}dashboard.html">Regresar</a>
+        </li>
+    `;
+    
     nav.innerHTML = `
-        <div class="container-fluid">
-            <div class="navbar-brand d-flex align-items-center gap-2" style="cursor:default;">
-                <img src="${logoSrc}" alt="Logo" style="height:36px; width:auto; object-fit:contain;" />
-                <div class="d-none d-lg-block">
-                    <strong style="color:#0D47A1">Banco Los Canchitos</strong>
-                    <div style="font-size:0.85rem;color:#607080">ERP Bancario</div>
+        <div class="container-fluid navbar-content">
+            <div class="navbar-left">
+                <div class="navbar-brand d-flex align-items-center gap-2" style="cursor:default;">
+                    <img src="${logoSrc}" alt="Logo" style="height:36px; width:auto; object-fit:contain;" />
+                    <div class="d-none d-lg-block">
+                        <strong style="color:#0D47A1">Banco Los Canchitos</strong>
+                        <div style="font-size:0.85rem;color:#607080">ERP Bancario</div>
+                    </div>
                 </div>
+                <div id="globalUserInfo" class="global-user-info d-none d-lg-flex"></div>
             </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#appNavbar" aria-controls="appNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="appNavbar">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-end align-items-lg-center text-end">
-                    <li class="nav-item me-2">
-                        <a class="btn btn-primary btn-sm" href="${pageBase}dashboard.html">Regresar</a>
-                    </li>
-                    <li class="nav-item me-3">
-                        <div id="globalUserInfo" class="global-user-info d-none d-lg-flex"></div>
-                    </li>
+            <div class="navbar-right">
+                <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
+                    ${backButtonHtml}
                     <li class="nav-item">
                         <button id="logoutBtn" class="btn btn-secondary">Salir</button>
                     </li>
