@@ -646,7 +646,7 @@
     </main>
 
     <!-- Modal de Confirmación -->
-    <div id="confirmModal" class="modal">
+    <div id="confirmModal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close" onclick="closeConfirmModal()">&times;</span>
@@ -825,12 +825,12 @@
         // Mostrar modal de confirmación
         function showConfirmModal(message) {
             document.getElementById('confirmMessage').textContent = message;
-            document.getElementById('confirmModal').style.display = 'block';
+            document.getElementById('confirmModal').classList.remove('hidden');
         }
 
         // Cerrar modal de confirmación
         function closeConfirmModal() {
-            document.getElementById('confirmModal').style.display = 'none';
+            document.getElementById('confirmModal').classList.add('hidden');
             pendingAction = null;
         }
 

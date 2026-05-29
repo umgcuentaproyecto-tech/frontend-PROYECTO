@@ -505,6 +505,13 @@ function renderMainMenu(user) {
             status: 'Disponible'
         },
         {
+            title: 'Auditoria',
+            description: 'Consulta eventos de acceso, transacciones, transferencias y cambios CRUD.',
+            href: '/modulos/auditoria.html',
+            roles: ['ADMIN'],
+            status: 'Disponible'
+        },
+        {
             title: 'Finanzas',
             description: 'Reportes financieros, conciliaciones y saldos generales.',
             href: '/modulos/finanzas.html',

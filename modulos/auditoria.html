@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Bancario - Auditoria</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .audit-panel {
+            background: #fff;
+            border: 1px solid #d9e2ec;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 18px;
+        }
+
+        .audit-filters {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(130px, 1fr));
+            gap: 12px;
+            align-items: end;
+        }
+
+        .audit-filters label {
+            font-weight: 600;
+            color: #1f2d3d;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .audit-filters input,
+        .audit-filters select {
+            width: 100%;
+            border: 1px solid #c8d3df;
+            border-radius: 6px;
+            padding: 9px 10px;
+            min-height: 42px;
+        }
+
+        .audit-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 14px;
+        }
+
+        .audit-table-wrap {
+            overflow-x: auto;
+        }
+
+        .audit-table {
+            min-width: 1100px;
+        }
+
+        .audit-table td {
+            vertical-align: top;
+        }
+
+        .audit-detail {
+            max-width: 280px;
+            max-height: 92px;
+            overflow: auto;
+            white-space: pre-wrap;
+            font-size: 0.82rem;
+            background: #f7f9fb;
+            border: 1px solid #edf1f5;
+            border-radius: 6px;
+            padding: 8px;
+            margin: 0;
+        }
+
+        .audit-badge {
+            display: inline-block;
+            border-radius: 999px;
+            padding: 4px 9px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            background: #e8f0fe;
+            color: #0d47a1;
+        }
+
+        .audit-pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .audit-muted {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1100px) {
+            .audit-filters {
+                grid-template-columns: repeat(2, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .audit-filters {
+                grid-template-columns: 1fr;
+            }
+
+            .audit-actions,
+            .audit-pagination {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body class="app-page">
+    <div id="appHeader" data-back="true"></div>
+
+    <main class="app-main">
+        <section class="page-title">
+            <h2>Modulo de auditoria</h2>
+            <p>Consulta los eventos guardados en MongoDB por el web service de auditoria.</p>
+        </section>
+
+        <section class="audit-panel">
+            <div id="auditAlert"></div>
+            <form id="auditFilterForm">
+                <div class="audit-filters">
+                    <div>
+                        <label for="categoria">Categoria</label>
+                        <select id="categoria">
+                            <option value="">Todas</option>
+                            <option value="ACCESO">ACCESO</option>
+                            <option value="CRUD">CRUD</option>
+                            <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+                            <option value="TRANSACCION">TRANSACCION</option>
+                            <option value="OTRO">OTRO</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="evento">Evento</label>
+                        <input id="evento" type="text" placeholder="LOGIN, CLIENTES...">
+                    </div>
+                    <div>
+                        <label for="idUsuario">ID usuario</label>
+                        <input id="idUsuario" type="number" min="1" placeholder="Ej. 1">
+                    </div>
+                    <div>
+                        <label for="desde">Desde</label>
+                        <input id="desde" type="date">
+                    </div>
+                    <div>
+                        <label for="hasta">Hasta</label>
+                        <input id="hasta" type="date">
+                    </div>
+                    <div>
+                        <label for="limit">Filas</label>
+                        <select id="limit">
+                            <option value="25">25</option>
+                            <option value="50" selected>50</option>
+                            <option value="100">100</option>
+                            <option value="200">200</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="audit-actions">
+                    <button type="submit" class="btn-primary">Filtrar</button>
+                    <button type="button" id="clearFiltersBtn" class="btn-secondary">Limpiar</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="audit-panel">
+            <div class="audit-table-wrap">
+                <table class="data-table audit-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha Guatemala</th>
+                            <th>Evento</th>
+                            <th>Categoria</th>
+                            <th>Usuario</th>
+                            <th>Tabla</th>
+                            <th>Registro</th>
+                            <th>Operacion</th>
+                            <th>IP</th>
+                            <th>Detalle</th>
+                        </tr>
+                    </thead>
+                    <tbody id="auditTableBody">
+                        <tr><td colspan="9">Cargando auditoria...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="audit-pagination">
+                <span id="auditSummary" class="audit-muted">-</span>
+                <div class="audit-actions">
+                    <button type="button" id="prevPageBtn" class="btn-secondary">Anterior</button>
+                    <button type="button" id="nextPageBtn" class="btn-secondary">Siguiente</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../config.js"></script>
+    <script src="../shared/header.js"></script>
+    <script src="../app.js"></script>
+    <script>
+        const apiBaseUrl = normalizeApiBaseUrl(window.__API_BASE_URL__ || '');
+        let currentPage = 1;
+        let totalPages = 1;
+
+        function getToken() {
+            return localStorage.getItem('authToken');
+        }
+
+        function getCurrentUser() {
+            try {
+                return JSON.parse(localStorage.getItem('currentUser') || 'null');
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function showAuditAlert(message, type = 'error') {
+            const box = document.getElementById('auditAlert');
+            box.innerHTML = `<div class="alert ${type}">${escapeHtml(message)}</div>`;
+        }
+
+        function clearAuditAlert() {
+            document.getElementById('auditAlert').innerHTML = '';
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;');
+        }
+
+        function formatFallbackDate(value) {
+            if (!value) return '-';
+            try {
+                return new Intl.DateTimeFormat('es-GT', {
+                    timeZone: 'America/Guatemala',
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                }).format(new Date(value));
+            } catch (error) {
+                return value;
+            }
+        }
+
+        function buildQuery() {
+            const params = new URLSearchParams();
+            const fields = ['categoria', 'evento', 'idUsuario', 'desde', 'hasta', 'limit'];
+
+            fields.forEach((field) => {
+                const value = document.getElementById(field).value.trim();
+                if (value) params.set(field, value);
+            });
+
+            params.set('page', currentPage);
+            return params.toString();
+        }
+
+        async function loadAuditoria() {
+            clearAuditAlert();
+            const tbody = document.getElementById('auditTableBody');
+            tbody.innerHTML = '<tr><td colspan="9">Cargando auditoria...</td></tr>';
+
+            try {
+                const response = await fetch(`${apiBaseUrl}/api/auditoria?${buildQuery()}`, {
+                    headers: {
+                        Authorization: `Bearer ${getToken()}`
+                    }
+                });
+                const payload = await response.json();
+
+                if (!response.ok || !payload.success) {
+                    throw new Error(payload.message || 'No se pudo cargar la auditoria');
+                }
+
+                totalPages = payload.totalPages || 1;
+                renderAuditoria(payload.data || []);
+                renderSummary(payload);
+            } catch (error) {
+                tbody.innerHTML = '<tr><td colspan="9">No se pudo cargar la auditoria.</td></tr>';
+                showAuditAlert(error.message);
+            }
+        }
+
+        function renderAuditoria(rows) {
+            const tbody = document.getElementById('auditTableBody');
+
+            if (!rows.length) {
+                tbody.innerHTML = '<tr><td colspan="9">No hay registros de auditoria para estos filtros.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = rows.map((row) => {
+                const usuario = row.nombreUsuario || (row.idUsuario ? `Usuario #${row.idUsuario}` : 'Sistema');
+                const fecha = row.fechaGuatemala || formatFallbackDate(row.timestamp);
+                const detalle = JSON.stringify(row.detalle || {}, null, 2);
+
+                return `
+                    <tr>
+                        <td>${escapeHtml(fecha)}</td>
+                        <td><strong>${escapeHtml(row.evento)}</strong></td>
+                        <td><span class="audit-badge">${escapeHtml(row.categoria || '-')}</span></td>
+                        <td>${escapeHtml(usuario)}</td>
+                        <td>${escapeHtml(row.tabla || '-')}</td>
+                        <td>${escapeHtml(row.registroId ?? '-')}</td>
+                        <td>${escapeHtml(row.operacion || '-')}</td>
+                        <td>${escapeHtml(row.ipOrigen || '-')}</td>
+                        <td><pre class="audit-detail">${escapeHtml(detalle)}</pre></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderSummary(payload) {
+            document.getElementById('auditSummary').textContent =
+                `Pagina ${payload.page || currentPage} de ${payload.totalPages || 1} - ${payload.total || 0} registros`;
+
+            document.getElementById('prevPageBtn').disabled = currentPage <= 1;
+            document.getElementById('nextPageBtn').disabled = currentPage >= totalPages;
+        }
+
+        document.getElementById('auditFilterForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            currentPage = 1;
+            loadAuditoria();
+        });
+
+        document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+            document.getElementById('auditFilterForm').reset();
+            document.getElementById('limit').value = '50';
+            currentPage = 1;
+            loadAuditoria();
+        });
+
+        document.getElementById('prevPageBtn').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage -= 1;
+                loadAuditoria();
+            }
+        });
+
+        document.getElementById('nextPageBtn').addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage += 1;
+                loadAuditoria();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = getCurrentUser();
+
+            if (!user || !getToken()) {
+                showAuditAlert('Debe iniciar sesion para ver auditoria.');
+                setTimeout(() => window.location.href = '../index.html', 1500);
+                return;
+            }
+
+            if (user.rol !== 'ADMIN') {
+                showAuditAlert('Solo administradores pueden acceder al modulo de auditoria.');
+                return;
+            }
+
+            loadAuditoria();
+        });
+    </script>
+</body>
+</html>
