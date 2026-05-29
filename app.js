@@ -508,7 +508,7 @@ function renderMainMenu(user) {
             title: 'Auditoria',
             description: 'Consulta eventos de acceso, transacciones, transferencias y cambios CRUD.',
             href: '/modulos/auditoria.html',
-            roles: ['ADMIN'],
+            roles: ['ADMIN', 'AUDITOR'],
             status: 'Disponible'
         },
         {

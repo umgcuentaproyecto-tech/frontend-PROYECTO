@@ -370,8 +370,8 @@
                 return;
             }
 
-            if (user.rol !== 'ADMIN') {
-                showAuditAlert('Solo administradores pueden acceder al modulo de auditoria.');
+            if (!['ADMIN', 'AUDITOR'].includes(user.rol)) {
+                showAuditAlert('Solo administradores y auditores pueden acceder al modulo de auditoria.');
                 return;
             }
 
