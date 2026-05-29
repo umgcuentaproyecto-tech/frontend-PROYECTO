@@ -360,16 +360,23 @@
         .action-buttons {
             display: flex;
             gap: 8px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: flex-start;
         }
 
-        .btn-small {
-            padding: 6px 12px;
-            font-size: 0.9em;
+        .bank-container .btn-small {
+            flex: 0 0 auto;
+            width: auto;
+            min-width: 86px;
+            padding: 7px 10px;
+            font-size: 0.85em;
+            line-height: 1.1;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s;
+            white-space: nowrap;
         }
 
         .btn-edit {
@@ -379,15 +386,6 @@
 
         .btn-edit:hover {
             background-color: #218838;
-        }
-
-        .btn-delete {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background-color: #c82333;
         }
 
         .btn-toggle {
@@ -749,7 +747,6 @@
                             <button class="btn-small btn-toggle" onclick="toggleStatus(${bank.id_banco}, ${!bank.activo})">
                                 ${bank.activo ? 'Desactivar' : 'Activar'}
                             </button>
-                            <button class="btn-small btn-delete" onclick="deleteBank(${bank.id_banco})">Eliminar</button>
                         </div>
                     </td>
                 </tr>
@@ -789,22 +786,6 @@
                 showAlert('Error de conexión', 'error');
             }
         }
-
-        // Eliminar banco
-        function deleteBank(id) {
-            if (!isAdmin()) {
-                showAlert('Solo administradores pueden eliminar bancos', 'error');
-                return;
-            }
-
-            pendingAction = {
-                type: 'delete',
-                id: id
-            };
-
-            showConfirmModal('¿Está seguro que desea eliminar este banco? Esta acción no se puede deshacer.');
-        }
-
         // Cambiar estado del banco
         function toggleStatus(id, activo) {
             if (!isAdmin()) {
@@ -841,36 +822,10 @@
             const action = pendingAction;
             closeConfirmModal();
 
-            if (action.type === 'delete') {
-                await performDelete(action.id);
-            } else if (action.type === 'toggleStatus') {
+            if (action.type === 'toggleStatus') {
                 await performToggleStatus(action.id, action.activo);
             }
         }
-
-        // Realizar eliminación
-        async function performDelete(id) {
-            try {
-                const response = await fetch(`${apiBaseUrl}/api/bancos/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${getToken()}`
-                    }
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    showAlert('Banco eliminado exitosamente', 'success');
-                    loadBanks();
-                } else {
-                    showAlert(data.message || 'Error al eliminar el banco', 'error');
-                }
-            } catch (error) {
-                showAlert('Error de conexión', 'error');
-            }
-        }
-
         // Realizar cambio de estado
         async function performToggleStatus(id, activo) {
             try {
