@@ -1005,9 +1005,16 @@ function renderTransfersModule() {
         clearValidationState();
     });
     document.getElementById('cuentaDestinoSearch').addEventListener('input', filterDestinationAccounts);
+    document.getElementById('cuentaDestino').addEventListener('input', clearValidationState);
     document.getElementById('cuentaDestino').addEventListener('change', clearValidationState);
-    document.getElementById('cuentaOrigen').addEventListener('change', showOriginAccountDetails);
-    document.getElementById('monto').addEventListener('input', validateTransferAmount);
+    document.getElementById('cuentaOrigen').addEventListener('change', function() {
+        showOriginAccountDetails();
+        updateTransferSubmitButton();
+    });
+    document.getElementById('monto').addEventListener('input', function() {
+        validateTransferAmount();
+        updateTransferSubmitButton();
+    });
 }
 
 async function loadTransferConfig() {
@@ -1084,6 +1091,45 @@ function renderTransferCatalogs(catalogs) {
     showOriginAccountDetails();
 }
 
+function normalizeBankName(value = '') {
+    return String(value)
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+        .toLowerCase();
+}
+
+function isBancoIndustrial(swiftCode) {
+    const catalogs = obtenerDelLocalStorage('transferCatalogs');
+    const bank = (catalogs?.banks || []).find((item) => item.codigo_swift === swiftCode);
+    const bankName = normalizeBankName(bank?.nombre || '');
+
+    return bankName === 'banco industrial' || bankName.includes('banco industrial');
+}
+
+function canTransferWithoutManualValidation() {
+    const swiftDestino = document.getElementById('swiftDestino')?.value;
+    return Boolean(swiftDestino && swiftDestino !== LOCAL_SWIFT && isBancoIndustrial(swiftDestino));
+}
+
+function updateTransferSubmitButton() {
+    const submitBtn = document.querySelector('#transferForm button[type="submit"]');
+    if (!submitBtn) return;
+
+    const isAccountValidated = document.getElementById('accountValidated')?.value === 'true';
+    const swiftDestino = document.getElementById('swiftDestino')?.value;
+    const cuentaDestino = document.getElementById('cuentaDestino')?.value?.trim();
+    const cuentaOrigen = document.getElementById('cuentaOrigen')?.value;
+    const monto = Number(document.getElementById('monto')?.value || 0);
+
+    if (canTransferWithoutManualValidation()) {
+        submitBtn.disabled = !(cuentaOrigen && swiftDestino && cuentaDestino && monto > 0);
+        return;
+    }
+
+    submitBtn.disabled = !isAccountValidated;
+}
+
 function updateDestinationAccountMode() {
     const catalogs = obtenerDelLocalStorage('transferCatalogs');
     const bankSelect = document.getElementById('swiftDestino');
@@ -1122,6 +1168,8 @@ function updateDestinationAccountMode() {
             submitBtn.disabled = true;
         }
     }
+
+    updateTransferSubmitButton();
 }
 
 function filterDestinationAccounts() {
@@ -1173,17 +1221,11 @@ function selectDestinationAccount(accountNumber) {
         document.getElementById('cuentaDestinoResumen').textContent = resumenText;
         // Validar automáticamente para transferencias internas
         document.getElementById('accountValidated').value = 'true';
-        const submitBtn = document.querySelector('#transferForm button[type="submit"]');
-        if (submitBtn) {
-            submitBtn.disabled = false;
-        }
+        updateTransferSubmitButton();
     } else {
         document.getElementById('cuentaDestinoResumen').textContent = 'Seleccione una cuenta para ver los detalles.';
         document.getElementById('accountValidated').value = 'false';
-        const submitBtn = document.querySelector('#transferForm button[type="submit"]');
-        if (submitBtn) {
-            submitBtn.disabled = true;
-        }
+        updateTransferSubmitButton();
     }
 
     document.querySelectorAll('.account-result').forEach((item) => {
@@ -1373,10 +1415,7 @@ function clearValidationState() {
         validationDiv.classList.add('hidden');
         validationDiv.innerHTML = '';
     }
-    const submitBtn = document.querySelector('#transferForm button[type="submit"]');
-    if (submitBtn) {
-        submitBtn.disabled = true;
-    }
+    updateTransferSubmitButton();
 }
 
 async function validateExternalAccount(event) {
@@ -1412,7 +1451,7 @@ async function validateExternalAccount(event) {
             const account = catalogs.accounts.find(acc => acc.numero_cuenta === cuentaDestino);
             validationDiv.classList.add('hidden');
             document.getElementById('accountValidated').value = 'true';
-            submitBtn.disabled = false;
+            updateTransferSubmitButton();
             showAccountValidationModal({
                 numeroCuenta: account.numero_cuenta,
                 nombreCliente: account.cliente,
@@ -1425,7 +1464,7 @@ async function validateExternalAccount(event) {
             validationDiv.className = 'validation-result error';
             validationDiv.innerHTML = 'Cuenta no encontrada';
             document.getElementById('accountValidated').value = 'false';
-            submitBtn.disabled = true;
+            updateTransferSubmitButton();
         }
         return;
     }
@@ -1441,7 +1480,7 @@ async function validateExternalAccount(event) {
         if (response.success && response.data) {
             validationDiv.classList.add('hidden');
             document.getElementById('accountValidated').value = 'true';
-            submitBtn.disabled = false;
+            updateTransferSubmitButton();
             
             // Mostrar modal con datos de la cuenta
             showAccountValidationModal(response.data);
@@ -1450,14 +1489,14 @@ async function validateExternalAccount(event) {
             validationDiv.className = 'validation-result error';
             validationDiv.innerHTML = response.message || 'Cuenta no encontrada';
             document.getElementById('accountValidated').value = 'false';
-            submitBtn.disabled = true;
+            updateTransferSubmitButton();
         }
     } catch (error) {
         validationDiv.classList.remove('hidden');
         validationDiv.className = 'validation-result error';
         validationDiv.innerHTML = error.message || 'Error al validar la cuenta';
         document.getElementById('accountValidated').value = 'false';
-        submitBtn.disabled = true;
+        updateTransferSubmitButton();
     }
 }
 
@@ -1480,7 +1519,8 @@ async function saveTransfer(event) {
     event.preventDefault();
 
     const isAccountValidated = document.getElementById('accountValidated').value === 'true';
-    if (!isAccountValidated) {
+    const validationIsOptional = canTransferWithoutManualValidation();
+    if (!isAccountValidated && !validationIsOptional) {
         showNotification('Debe validar la cuenta destino primero', 'error');
         return;
     }
