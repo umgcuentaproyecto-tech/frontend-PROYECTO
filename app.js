@@ -1091,25 +1091,9 @@ function renderTransferCatalogs(catalogs) {
     showOriginAccountDetails();
 }
 
-function normalizeBankName(value = '') {
-    return String(value)
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .trim()
-        .toLowerCase();
-}
-
-function isBancoIndustrial(swiftCode) {
-    const catalogs = obtenerDelLocalStorage('transferCatalogs');
-    const bank = (catalogs?.banks || []).find((item) => item.codigo_swift === swiftCode);
-    const bankName = normalizeBankName(bank?.nombre || '');
-
-    return bank?.codigo_swift === 'BIGT2026' || bankName.includes('banco industrial');
-}
-
 function canTransferWithoutManualValidation() {
     const swiftDestino = document.getElementById('swiftDestino')?.value;
-    return Boolean(swiftDestino && swiftDestino !== LOCAL_SWIFT && isBancoIndustrial(swiftDestino));
+    return Boolean(swiftDestino && swiftDestino !== LOCAL_SWIFT);
 }
 
 function updateTransferSubmitButton() {
@@ -1151,7 +1135,7 @@ function updateDestinationAccountMode() {
 
     // Mostrar botón de validación solo para transferencias externas
     if (validateBtn) {
-        validateBtn.classList.toggle('hidden', isInternalTransfer);
+        validateBtn.classList.add('hidden');
     }
 
     if (isInternalTransfer) {
