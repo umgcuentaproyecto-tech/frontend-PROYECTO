@@ -1091,11 +1091,42 @@ function renderTransferCatalogs(catalogs) {
     showOriginAccountDetails();
 }
 
+function normalizeBankName(value = '') {
+    return String(value)
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
+        .toLowerCase();
+}
+
+function isBancoIndustrial(swiftCode) {
+    const catalogs = obtenerDelLocalStorage('transferCatalogs');
+    const bank = (catalogs?.banks || []).find((item) => item.codigo_swift === swiftCode);
+    const bankName = normalizeBankName(bank?.nombre || '');
+
+    return bank?.codigo_swift === 'BIGT2026' || bankName.includes('banco industrial');
+}
+
+function canTransferWithoutManualValidation() {
+    const swiftDestino = document.getElementById('swiftDestino')?.value;
+    return Boolean(swiftDestino && swiftDestino !== LOCAL_SWIFT && isBancoIndustrial(swiftDestino));
+}
+
 function updateTransferSubmitButton() {
     const submitBtn = document.querySelector('#transferForm button[type="submit"]');
     if (!submitBtn) return;
 
     const isAccountValidated = document.getElementById('accountValidated')?.value === 'true';
+    const swiftDestino = document.getElementById('swiftDestino')?.value;
+    const cuentaDestino = document.getElementById('cuentaDestino')?.value?.trim();
+    const cuentaOrigen = document.getElementById('cuentaOrigen')?.value;
+    const monto = Number(document.getElementById('monto')?.value || 0);
+
+    if (canTransferWithoutManualValidation()) {
+        submitBtn.disabled = !(cuentaOrigen && swiftDestino && cuentaDestino && monto > 0);
+        return;
+    }
+
     submitBtn.disabled = !isAccountValidated;
 }
 
@@ -1488,7 +1519,8 @@ async function saveTransfer(event) {
     event.preventDefault();
 
     const isAccountValidated = document.getElementById('accountValidated').value === 'true';
-    if (!isAccountValidated) {
+    const validationIsOptional = canTransferWithoutManualValidation();
+    if (!isAccountValidated && !validationIsOptional) {
         showNotification('Debe validar la cuenta destino primero', 'error');
         return;
     }
